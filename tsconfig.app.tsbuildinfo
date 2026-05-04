@@ -1,1 +1,0 @@
-{"root":["./src/app.tsx","./src/constants.ts","./src/main.tsx","./src/types.ts","./src/vite-env.d.ts","./src/components/presencebadge.tsx","./src/components/roomgate.tsx","./src/components/toolbar.tsx","./src/components/transcriptview.tsx","./src/hooks/usepresence.ts","./src/hooks/usesegments.ts","./src/lib/firebase.ts","./src/lib/room.ts"],"version":"5.9.3"}

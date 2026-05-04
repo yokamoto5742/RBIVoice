@@ -17,6 +17,7 @@ __pycache__/
 .firebase/
 .vite/
 *.log
+*.tsbuildinfo
 .DS_Store
 
 error_log.txt
