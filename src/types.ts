@@ -1,11 +1,9 @@
 import type { Timestamp } from 'firebase/firestore';
 
-export interface Segment {
-  id: string;
+export interface Transcript {
   text: string;
-  createdAt: Timestamp | null;
+  updatedAt: Timestamp | null;
   expiresAt: Timestamp | null;
-  senderId: string;
 }
 
 export interface PresenceState {

@@ -1,11 +1,12 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { PresenceBadge } from './components/PresenceBadge';
 import { RoomGate } from './components/RoomGate';
 import { ToolBar } from './components/ToolBar';
 import { TranscriptView } from './components/TranscriptView';
 import { UI_TEXT } from './constants';
 import { usePresence } from './hooks/usePresence';
-import { useSegments } from './hooks/useSegments';
+import { useTranscript } from './hooks/useTranscript';
+import { clearTranscript, saveTranscriptText } from './lib/transcript';
 import { getRoomIdFromUrl } from './lib/room';
 
 export default function App() {
@@ -15,21 +16,50 @@ export default function App() {
 }
 
 function RoomView({ roomId }: { roomId: string }) {
-  const segments = useSegments(roomId);
+  const transcript = useTranscript(roomId);
   const { status } = usePresence(roomId);
-  const [hiddenBefore, setHiddenBefore] = useState<number>(0);
+  const canEdit = status === 'idle';
 
-  const text = useMemo(() => {
-    const nowMs = Date.now();
-    return segments
-      .filter((seg) => {
-        const expiresMs = seg.expiresAt?.toMillis() ?? Number.POSITIVE_INFINITY;
-        const createdMs = seg.createdAt?.toMillis() ?? 0;
-        return expiresMs > nowMs && createdMs >= hiddenBefore;
-      })
-      .map((seg) => seg.text)
-      .join('\n');
-  }, [segments, hiddenBefore]);
+  const liveText = useMemo(() => {
+    if (!transcript) return '';
+    const expiresMs = transcript.expiresAt?.toMillis() ?? Number.POSITIVE_INFINITY;
+    if (expiresMs <= Date.now()) return '';
+    return transcript.text;
+  }, [transcript]);
+
+  const [draft, setDraft] = useState<string>('');
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const prevCanEditRef = useRef<boolean>(canEdit);
+
+  // 編集権が外れた瞬間にドラフトを破棄してライブ表示に戻す
+  useEffect(() => {
+    if (prevCanEditRef.current && !canEdit) {
+      setIsEditing(false);
+      setDraft('');
+    }
+    prevCanEditRef.current = canEdit;
+  }, [canEdit]);
+
+  const displayText = isEditing ? draft : liveText;
+  const isDirty = isEditing && draft !== liveText;
+
+  function handleChange(next: string) {
+    if (!canEdit) return;
+    if (!isEditing) setIsEditing(true);
+    setDraft(next);
+  }
+
+  async function handleSave() {
+    await saveTranscriptText(roomId, draft);
+    setIsEditing(false);
+    setDraft('');
+  }
+
+  async function handleClear() {
+    await clearTranscript(roomId);
+    setIsEditing(false);
+    setDraft('');
+  }
 
   return (
     <div className="mx-auto flex h-full max-w-4xl flex-col gap-3 p-4">
@@ -41,10 +71,16 @@ function RoomView({ roomId }: { roomId: string }) {
           </span>
           <PresenceBadge status={status} />
         </div>
-        <ToolBar text={text} onClear={() => setHiddenBefore(Date.now())} />
+        <ToolBar
+          text={displayText}
+          canEdit={canEdit}
+          isDirty={isDirty}
+          onSave={handleSave}
+          onClear={handleClear}
+        />
       </header>
       <main className="min-h-0 flex-1">
-        <TranscriptView text={text} />
+        <TranscriptView text={displayText} readOnly={!canEdit} onChange={handleChange} />
       </main>
     </div>
   );
