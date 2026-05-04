@@ -1,7 +1,7 @@
 export const UI_TEXT = {
-  appTitle: 'RBIVoice ビューア',
-  roomLabel: '部屋',
-  presenceRecording: '録音中',
+  appTitle: 'RBIVoice',
+  roomLabel: 'ユーザーID',
+  presenceRecording: '音声入力中',
   presenceIdle: '待機中',
   presenceDisconnected: '切断',
   copyButton: 'コピー',
@@ -11,7 +11,7 @@ export const UI_TEXT = {
   clearTooltip: 'ローカル表示のみクリアします。Firestore のデータは PC 側からのみ削除できます。',
   copyTooltip: '表示中のテキスト全文をクリップボードにコピーします。',
   roomGateTitle: '部屋が指定されていません',
-  roomGateDescription: 'URL に「?room=部屋ID」を指定してください。',
+  roomGateDescription: 'URL に「?room=ユーザーID」を指定してください。',
   roomGateExample: '例: https://example.com/?room=tanaka-pc',
   emptyTranscript: '（まだ文字起こしはありません）',
 } as const;
