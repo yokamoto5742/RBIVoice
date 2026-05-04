@@ -2,8 +2,6 @@
 
 RBIVoiceInput（PC 側アプリ）が Firestore に書き込む文字起こし結果を、ブラウザから閲覧する読み取り専用の Web ビューア。
 
-詳細仕様は [`RBIVoice_plan.md`](./RBIVoice_plan.md) を参照。
-
 ## セットアップ
 
 ```powershell
