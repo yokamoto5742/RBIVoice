@@ -18,18 +18,24 @@ export function usePresence(roomId: string): PresenceResult {
   useEffect(() => {
     setState(null);
     const ref = doc(db, 'rooms', roomId, 'meta', 'state');
-    const unsubscribe = onSnapshot(ref, (snap) => {
-      if (!snap.exists()) {
-        setState(null);
-        return;
-      }
-      const data = snap.data();
-      setState({
-        recording: Boolean(data.recording),
-        lastPing: data.lastPing ?? null,
-        senderId: data.senderId ?? '',
-      });
-    });
+    const unsubscribe = onSnapshot(
+      ref,
+      (snap) => {
+        if (!snap.exists()) {
+          setState(null);
+          return;
+        }
+        const data = snap.data();
+        setState({
+          recording: Boolean(data.recording),
+          lastPing: data.lastPing ?? null,
+          senderId: data.senderId ?? '',
+        });
+      },
+      (err) => {
+        console.error('usePresence onSnapshot error:', err);
+      },
+    );
     return unsubscribe;
   }, [roomId]);
 

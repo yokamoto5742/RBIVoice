@@ -20,19 +20,25 @@ export function useSegments(roomId: string): Segment[] {
       orderBy('createdAt', 'asc'),
       limit(SEGMENT_LIMIT),
     );
-    const unsubscribe = onSnapshot(q, (snap) => {
-      const next = snap.docs.map((d) => {
-        const data = d.data();
-        return {
-          id: d.id,
-          text: data.text ?? '',
-          createdAt: data.createdAt ?? null,
-          expiresAt: data.expiresAt ?? null,
-          senderId: data.senderId ?? '',
-        } satisfies Segment;
-      });
-      setSegments(next);
-    });
+    const unsubscribe = onSnapshot(
+      q,
+      (snap) => {
+        const next = snap.docs.map((d) => {
+          const data = d.data();
+          return {
+            id: d.id,
+            text: data.text ?? '',
+            createdAt: data.createdAt ?? null,
+            expiresAt: data.expiresAt ?? null,
+            senderId: data.senderId ?? '',
+          } satisfies Segment;
+        });
+        setSegments(next);
+      },
+      (err) => {
+        console.error('useSegments onSnapshot error:', err);
+      },
+    );
     return unsubscribe;
   }, [roomId]);
 
