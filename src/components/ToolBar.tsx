@@ -56,7 +56,7 @@ export function ToolBar({ text, canEdit, isDirty, onSave, onClear, onFeedback }:
         onClick={handleCopy}
         title={UI_TEXT.copyTooltip}
         disabled={text.length === 0 || busy}
-        className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-800 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-800 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:disabled:opacity-40"
       >
         {UI_TEXT.copyButton}
       </button>
@@ -65,7 +65,7 @@ export function ToolBar({ text, canEdit, isDirty, onSave, onClear, onFeedback }:
         onClick={handleSave}
         title={UI_TEXT.saveTooltip + editTooltipSuffix}
         disabled={!canEdit || !isDirty || busy}
-        className="rounded-md border border-blue-300 bg-blue-50 px-3 py-1.5 text-sm text-blue-800 shadow-sm hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded-md border border-blue-300 bg-blue-50 px-3 py-1.5 text-sm text-blue-800 shadow-sm hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-blue-600 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-800/40 dark:disabled:opacity-40"
       >
         {UI_TEXT.saveButton}
       </button>
@@ -74,7 +74,7 @@ export function ToolBar({ text, canEdit, isDirty, onSave, onClear, onFeedback }:
         onClick={handleClear}
         title={UI_TEXT.clearTooltip + editTooltipSuffix}
         disabled={!canEdit || busy}
-        className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-800 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-800 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:disabled:opacity-40"
       >
         {UI_TEXT.clearButton}
       </button>

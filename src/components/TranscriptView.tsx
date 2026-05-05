@@ -46,7 +46,7 @@ export function TranscriptView({ text, readOnly, onChange }: Props) {
       value={display}
       onChange={(e) => onChange(e.target.value)}
       onScroll={handleScroll}
-      className="h-full w-full resize-none rounded-md border border-gray-300 bg-white p-3 font-mono text-sm leading-relaxed text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 read-only:bg-gray-50"
+      className="h-full w-full resize-none rounded-md border border-gray-300 bg-white p-3 font-mono text-sm leading-relaxed text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 read-only:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:shadow-none dark:focus:ring-blue-500/50 dark:read-only:bg-gray-950"
       spellCheck={false}
     />
   );
