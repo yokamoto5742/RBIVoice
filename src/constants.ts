@@ -20,6 +20,7 @@ export const UI_TEXT = {
   roomGateDescription: 'URL に「?room=ユーザーID」を指定してください',
   roomGateExample: '例: https://example.com/?room=tanaka-pc',
   emptyTranscript: '（まだ文字起こしはありません）',
+  autoDeleteNotice: '文字起こし結果は一定時間後に自動消去されます',
 } as const;
 
 export const PRESENCE_TIMEOUT_MS = 30 * 1000;

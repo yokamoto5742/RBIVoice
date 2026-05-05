@@ -87,6 +87,7 @@ function RoomView({ roomId }: { roomId: string }) {
           onFeedback={handleFeedback}
         />
       </header>
+      <p className="text-xs text-gray-400">{UI_TEXT.autoDeleteNotice}</p>
       <main className="min-h-0 flex-1">
         <TranscriptView text={displayText} readOnly={!canEdit} onChange={handleChange} />
       </main>
