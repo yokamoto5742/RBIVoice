@@ -5,6 +5,8 @@ export const UI_TEXT = {
   presenceIdle: '待機中',
   presenceDisconnected: '切断',
   copyButton: 'コピー',
+  removeLineBreaksButton: '改行除去',
+  removeLineBreaksTooltip: '表示中のテキストから改行をすべて除去します',
   clearButton: 'クリア',
   saveButton: '保存',
   copySuccess: 'コピーしました',

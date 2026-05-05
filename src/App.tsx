@@ -55,6 +55,10 @@ function RoomView({ roomId }: { roomId: string }) {
     setDraft(next);
   }
 
+  function handleRemoveLineBreaks() {
+    handleChange(displayText.replace(/[\r\n]+/g, ''));
+  }
+
   async function handleSave() {
     await saveTranscriptText(roomId, draft);
     setIsEditing(false);
@@ -82,6 +86,7 @@ function RoomView({ roomId }: { roomId: string }) {
           text={displayText}
           canEdit={canEdit}
           isDirty={isDirty}
+          onRemoveLineBreaks={handleRemoveLineBreaks}
           onSave={handleSave}
           onClear={handleClear}
           onFeedback={handleFeedback}

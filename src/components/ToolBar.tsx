@@ -5,12 +5,13 @@ interface Props {
   text: string;
   canEdit: boolean;
   isDirty: boolean;
+  onRemoveLineBreaks: () => void;
   onSave: () => Promise<void>;
   onClear: () => Promise<void>;
   onFeedback: (msg: string) => void;
 }
 
-export function ToolBar({ text, canEdit, isDirty, onSave, onClear, onFeedback }: Props) {
+export function ToolBar({ text, canEdit, isDirty, onRemoveLineBreaks, onSave, onClear, onFeedback }: Props) {
   const [busy, setBusy] = useState<boolean>(false);
 
   async function handleCopy() {
@@ -59,6 +60,15 @@ export function ToolBar({ text, canEdit, isDirty, onSave, onClear, onFeedback }:
         className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-800 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:disabled:opacity-40"
       >
         {UI_TEXT.copyButton}
+      </button>
+      <button
+        type="button"
+        onClick={onRemoveLineBreaks}
+        title={UI_TEXT.removeLineBreaksTooltip}
+        disabled={text.length === 0 || !canEdit || busy}
+        className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-800 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:disabled:opacity-40"
+      >
+        {UI_TEXT.removeLineBreaksButton}
       </button>
       <button
         type="button"
