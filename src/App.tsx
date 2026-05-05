@@ -18,7 +18,7 @@ export default function App() {
 function RoomView({ roomId }: { roomId: string }) {
   const transcript = useTranscript(roomId);
   const { status } = usePresence(roomId);
-  const canEdit = status === 'idle';
+  const canEdit = status !== 'recording';
 
   const liveText = useMemo(() => {
     if (!transcript) return '';
