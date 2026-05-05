@@ -47,7 +47,7 @@ export function usePresence(roomId: string): PresenceResult {
   return { status: computeStatus(state, now), state };
 }
 
-function computeStatus(state: PresenceState | null, now: number): PresenceStatus {
+export function computeStatus(state: PresenceState | null, now: number): PresenceStatus {
   if (!state) return 'unknown';
   const lastPingMs = state.lastPing?.toMillis() ?? 0;
   const elapsed = now - lastPingMs;
