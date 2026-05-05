@@ -19,6 +19,12 @@ function RoomView({ roomId }: { roomId: string }) {
   const transcript = useTranscript(roomId);
   const { status } = usePresence(roomId);
   const canEdit = status !== 'recording';
+  const [feedback, setFeedback] = useState<string>('');
+
+  function handleFeedback(msg: string) {
+    setFeedback(msg);
+    window.setTimeout(() => setFeedback(''), 1500);
+  }
 
   const liveText = useMemo(() => {
     if (!transcript) return '';
@@ -70,6 +76,7 @@ function RoomView({ roomId }: { roomId: string }) {
             {UI_TEXT.roomLabel}: <code className="rounded bg-gray-100 px-1.5 py-0.5">{roomId}</code>
           </span>
           <PresenceBadge status={status} />
+          {feedback && <span className="text-xs text-gray-500">{feedback}</span>}
         </div>
         <ToolBar
           text={displayText}
@@ -77,6 +84,7 @@ function RoomView({ roomId }: { roomId: string }) {
           isDirty={isDirty}
           onSave={handleSave}
           onClear={handleClear}
+          onFeedback={handleFeedback}
         />
       </header>
       <main className="min-h-0 flex-1">

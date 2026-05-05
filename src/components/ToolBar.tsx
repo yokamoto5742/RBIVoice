@@ -7,23 +7,18 @@ interface Props {
   isDirty: boolean;
   onSave: () => Promise<void>;
   onClear: () => Promise<void>;
+  onFeedback: (msg: string) => void;
 }
 
-export function ToolBar({ text, canEdit, isDirty, onSave, onClear }: Props) {
-  const [feedback, setFeedback] = useState<string>('');
+export function ToolBar({ text, canEdit, isDirty, onSave, onClear, onFeedback }: Props) {
   const [busy, setBusy] = useState<boolean>(false);
-
-  function flash(msg: string) {
-    setFeedback(msg);
-    window.setTimeout(() => setFeedback(''), 1500);
-  }
 
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(text);
-      flash(UI_TEXT.copySuccess);
+      onFeedback(UI_TEXT.copySuccess);
     } catch {
-      flash(UI_TEXT.copyFailure);
+      onFeedback(UI_TEXT.copyFailure);
     }
   }
 
@@ -31,10 +26,10 @@ export function ToolBar({ text, canEdit, isDirty, onSave, onClear }: Props) {
     setBusy(true);
     try {
       await onSave();
-      flash(UI_TEXT.saveSuccess);
+      onFeedback(UI_TEXT.saveSuccess);
     } catch (err) {
       console.error('save failed:', err);
-      flash(UI_TEXT.saveFailure);
+      onFeedback(UI_TEXT.saveFailure);
     } finally {
       setBusy(false);
     }
@@ -46,7 +41,7 @@ export function ToolBar({ text, canEdit, isDirty, onSave, onClear }: Props) {
       await onClear();
     } catch (err) {
       console.error('clear failed:', err);
-      flash(UI_TEXT.clearFailure);
+      onFeedback(UI_TEXT.clearFailure);
     } finally {
       setBusy(false);
     }
@@ -83,7 +78,6 @@ export function ToolBar({ text, canEdit, isDirty, onSave, onClear }: Props) {
       >
         {UI_TEXT.clearButton}
       </button>
-      {feedback && <span className="text-xs text-gray-500">{feedback}</span>}
     </div>
   );
 }
