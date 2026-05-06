@@ -64,7 +64,7 @@ pnpm dev
 
 ### 部屋の指定
 
-URL クエリパラメータ `?room=<roomId>` で部屋を指定する。
+URL クエリパラメータ `?room=<roomId>` でユーザーIDを指定する。
 
 ```
 https://example.com/?room=tanaka-pc
