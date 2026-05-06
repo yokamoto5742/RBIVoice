@@ -18,7 +18,7 @@ export const UI_TEXT = {
   copyTooltip: '表示中のテキスト全文をクリップボードにコピーします',
   saveTooltip: '編集内容を保存します（音声入力中は実行不可）',
   editDisabledHint: '音声入力中は編集できません',
-  roomGateTitle: '部屋が指定されていません',
+  roomGateTitle: 'ユーザーIDが指定されていません',
   roomGateDescription: 'URL に「?room=ユーザーID」を指定してください',
   roomGateExample: '例: https://example.com/?room=tanaka-pc',
   emptyTranscript: '（まだ文字起こしはありません）',
