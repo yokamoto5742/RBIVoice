@@ -55,7 +55,8 @@ rooms/{roomId}/
 
 - `useTranscript(roomId)` — Firestore `onSnapshot` でリアルタイム購読
 - `usePresence(roomId)` — `meta/state` を購読し、`PRESENCE_TIMEOUT_MS`（30秒）以内の `lastPing` でオンライン判定。1秒ごとにポーリングして `recording` / `idle` / `disconnected` を算出
-- 録音中（`status === 'recording'`）はテキスト編集・保存・クリアが無効化される
+- 録音中（`status === 'recording'`）はテキスト編集・保存・改行除去・句読点削除が無効化される
+- クリアは録音中も含め常時実行可能（`clearTranscriptText` はドキュメント未作成時の `not-found` を成功扱いにする）
 
 ### 定数・UI テキスト
 

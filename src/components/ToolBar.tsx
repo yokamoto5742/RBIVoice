@@ -6,6 +6,7 @@ interface Props {
   canEdit: boolean;
   isDirty: boolean;
   onRemoveLineBreaks: () => void;
+  onRemovePunctuation: () => void;
   onSave: () => Promise<void>;
   onClear: () => Promise<void>;
   onFeedback: (msg: string) => void;
@@ -19,7 +20,7 @@ function Button({ variant = 'neutral', ...props }: ComponentProps<'button'> & { 
   return <button type="button" {...props} className={`${BASE} ${variant === 'primary' ? PRIMARY : NEUTRAL}`} />;
 }
 
-export function ToolBar({ text, canEdit, isDirty, onRemoveLineBreaks, onSave, onClear, onFeedback }: Props) {
+export function ToolBar({ text, canEdit, isDirty, onRemoveLineBreaks, onRemovePunctuation, onSave, onClear, onFeedback }: Props) {
   const [busy, setBusy] = useState(false);
 
   async function handleCopy() {
@@ -65,6 +66,13 @@ export function ToolBar({ text, canEdit, isDirty, onRemoveLineBreaks, onSave, on
         {UI_TEXT.copyButton}
       </Button>
       <Button
+        onClick={onRemovePunctuation}
+        title={UI_TEXT.removePunctuationTooltip}
+        disabled={text.length === 0 || !canEdit || busy}
+      >
+        {UI_TEXT.removePunctuationButton}
+      </Button>
+      <Button
         onClick={onRemoveLineBreaks}
         title={UI_TEXT.removeLineBreaksTooltip}
         disabled={text.length === 0 || !canEdit || busy}
@@ -81,8 +89,8 @@ export function ToolBar({ text, canEdit, isDirty, onRemoveLineBreaks, onSave, on
       </Button>
       <Button
         onClick={handleClear}
-        title={UI_TEXT.clearTooltip + editTooltipSuffix}
-        disabled={!canEdit || busy}
+        title={UI_TEXT.clearTooltip}
+        disabled={busy}
       >
         {UI_TEXT.clearButton}
       </Button>

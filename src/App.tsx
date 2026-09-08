@@ -7,7 +7,7 @@ import { FEEDBACK_DURATION_MS, PRESENCE_TICK_MS, UI_TEXT } from './constants';
 import { useNow } from './hooks/useNow';
 import { usePresence } from './hooks/usePresence';
 import { useTranscript } from './hooks/useTranscript';
-import { activeText, saveTranscriptText } from './lib/transcript';
+import { activeText, clearTranscriptText, saveTranscriptText } from './lib/transcript';
 import { getRoomIdFromUrl } from './lib/room';
 
 export default function App() {
@@ -57,6 +57,10 @@ function RoomView({ roomId }: { roomId: string }) {
     handleChange(displayText.replace(/[\r\n]+/g, ''));
   }
 
+  function handleRemovePunctuation() {
+    handleChange(displayText.replace(/[、。]/g, ''));
+  }
+
   async function handleSave() {
     await saveTranscriptText(roomId, draft);
     setIsEditing(false);
@@ -64,9 +68,10 @@ function RoomView({ roomId }: { roomId: string }) {
   }
 
   async function handleClear() {
-    await saveTranscriptText(roomId, '');
+    // 編集中のドラフトを先に捨てて、書き込み結果に関わらず表示を空にする
     setIsEditing(false);
     setDraft('');
+    await clearTranscriptText(roomId);
   }
 
   return (
@@ -85,6 +90,7 @@ function RoomView({ roomId }: { roomId: string }) {
           canEdit={canEdit}
           isDirty={isDirty}
           onRemoveLineBreaks={handleRemoveLineBreaks}
+          onRemovePunctuation={handleRemovePunctuation}
           onSave={handleSave}
           onClear={handleClear}
           onFeedback={setFeedback}

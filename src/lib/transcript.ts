@@ -25,3 +25,13 @@ export async function saveTranscriptText(roomId: string, text: string): Promise<
     expiresAt: nextExpiresAt(),
   });
 }
+
+/** クリアは常に成功扱いにする。ドキュメント未作成時は消すものがないため無視する */
+export async function clearTranscriptText(roomId: string): Promise<void> {
+  try {
+    await saveTranscriptText(roomId, '');
+  } catch (err) {
+    if ((err as { code?: string }).code === 'not-found') return;
+    throw err;
+  }
+}
