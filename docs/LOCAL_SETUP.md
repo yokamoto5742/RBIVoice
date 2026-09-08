@@ -72,7 +72,7 @@ pnpm dev
 ユーザーIDをクエリパラメータで指定してアクセスする。
 
 ```
-http://localhost:5173/?room=tanaka-pc
+http://localhost:5173/?room=test
 ```
 
 - `?room=` がない場合は「ユーザーIDが指定されていません」という案内ページが表示される
