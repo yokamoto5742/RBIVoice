@@ -39,7 +39,7 @@ VITE_RECAPTCHA_SITE_KEY=
 VITE_APPCHECK_DEBUG_TOKEN=true
 ```
 
-値の取得元: Firebase コンソール → プロジェクトの設定 → マイアプリ（ウェブアプリ）→ SDK setup and configuration。
+値の取得元: Firebase コンソール → プロジェクトの設定 → マイアプリ（ウェブアプリ）→ SDK の設定と構成 → Config
 
 ローカル開発時のポイント:
 
