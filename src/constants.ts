@@ -13,6 +13,7 @@ export const UI_TEXT = {
   copyFailure: 'コピーに失敗しました',
   saveSuccess: '保存しました',
   saveFailure: '保存に失敗しました',
+  clearSuccess: 'クリアしました',
   clearFailure: 'クリアに失敗しました',
   clearTooltip: 'この部屋の文字起こしを即時に消去します（音声入力中は実行不可）',
   copyTooltip: '表示中のテキスト全文をクリップボードにコピーします',

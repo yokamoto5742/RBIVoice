@@ -6,6 +6,8 @@ export interface Transcript {
   expiresAt: Timestamp | null;
 }
 
+export type PresenceStatus = 'recording' | 'idle' | 'disconnected';
+
 export interface PresenceState {
   recording: boolean;
   lastPing: Timestamp | null;

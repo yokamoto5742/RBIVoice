@@ -1,5 +1,5 @@
 import { UI_TEXT } from '../constants';
-import type { PresenceStatus } from '../hooks/usePresence';
+import type { PresenceStatus } from '../types';
 
 interface Props {
   status: PresenceStatus;

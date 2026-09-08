@@ -48,6 +48,7 @@ export function ToolBar({ text, canEdit, isDirty, onRemoveLineBreaks, onSave, on
     setBusy(true);
     try {
       await onClear();
+      onFeedback(UI_TEXT.clearSuccess);
     } catch (err) {
       console.error('clear failed:', err);
       onFeedback(UI_TEXT.clearFailure);

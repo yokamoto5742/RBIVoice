@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { Timestamp, doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import type { Transcript } from '../types';
 
@@ -19,8 +19,8 @@ export function useTranscript(roomId: string): Transcript | null {
         const data = snap.data();
         setTranscript({
           text: typeof data.text === 'string' ? data.text : '',
-          updatedAt: data.updatedAt ?? null,
-          expiresAt: data.expiresAt ?? null,
+          updatedAt: data.updatedAt instanceof Timestamp ? data.updatedAt : null,
+          expiresAt: data.expiresAt instanceof Timestamp ? data.expiresAt : null,
         });
       },
       (err) => {
