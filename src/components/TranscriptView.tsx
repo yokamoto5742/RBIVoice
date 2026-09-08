@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { UI_TEXT } from '../constants';
 
 interface Props {
@@ -11,7 +11,7 @@ const SCROLL_TOLERANCE_PX = 8;
 
 export function TranscriptView({ text, readOnly, onChange }: Props) {
   const ref = useRef<HTMLTextAreaElement | null>(null);
-  const stickToBottomRef = useRef<boolean>(true);
+  const stickToBottomRef = useRef(true);
 
   function handleScroll() {
     const el = ref.current;
@@ -29,21 +29,12 @@ export function TranscriptView({ text, readOnly, onChange }: Props) {
     }
   }, [text, readOnly]);
 
-  useEffect(() => {
-    stickToBottomRef.current = true;
-  }, []);
-
-  const showPlaceholder = readOnly && text.length === 0;
-  const display = useMemo(
-    () => (showPlaceholder ? UI_TEXT.emptyTranscript : text),
-    [showPlaceholder, text],
-  );
-
   return (
     <textarea
       ref={ref}
       readOnly={readOnly}
-      value={display}
+      value={text}
+      placeholder={UI_TEXT.emptyTranscript}
       onChange={(e) => onChange(e.target.value)}
       onScroll={handleScroll}
       className="h-full w-full resize-none rounded-md border border-gray-300 bg-white p-3 font-mono text-sm leading-relaxed text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 read-only:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:shadow-none dark:focus:ring-blue-500/50 dark:read-only:bg-gray-950"

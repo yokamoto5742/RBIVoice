@@ -3,10 +3,11 @@ import { PresenceBadge } from './components/PresenceBadge';
 import { RoomGate } from './components/RoomGate';
 import { ToolBar } from './components/ToolBar';
 import { TranscriptView } from './components/TranscriptView';
-import { UI_TEXT } from './constants';
+import { FEEDBACK_DURATION_MS, PRESENCE_TICK_MS, UI_TEXT } from './constants';
+import { useNow } from './hooks/useNow';
 import { usePresence } from './hooks/usePresence';
 import { useTranscript } from './hooks/useTranscript';
-import { clearTranscript, saveTranscriptText } from './lib/transcript';
+import { activeText, saveTranscriptText } from './lib/transcript';
 import { getRoomIdFromUrl } from './lib/room';
 
 export default function App() {
@@ -16,26 +17,23 @@ export default function App() {
 }
 
 function RoomView({ roomId }: { roomId: string }) {
+  const now = useNow(PRESENCE_TICK_MS);
   const transcript = useTranscript(roomId);
-  const { status } = usePresence(roomId);
+  const status = usePresence(roomId, now);
   const canEdit = status !== 'recording';
-  const [feedback, setFeedback] = useState<string>('');
+  const [feedback, setFeedback] = useState('');
 
-  function handleFeedback(msg: string) {
-    setFeedback(msg);
-    window.setTimeout(() => setFeedback(''), 1500);
-  }
+  useEffect(() => {
+    if (!feedback) return;
+    const id = window.setTimeout(() => setFeedback(''), FEEDBACK_DURATION_MS);
+    return () => window.clearTimeout(id);
+  }, [feedback]);
 
-  const liveText = useMemo(() => {
-    if (!transcript) return '';
-    const expiresMs = transcript.expiresAt?.toMillis() ?? Number.POSITIVE_INFINITY;
-    if (expiresMs <= Date.now()) return '';
-    return transcript.text;
-  }, [transcript]);
+  const liveText = activeText(transcript, now);
 
-  const [draft, setDraft] = useState<string>('');
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const prevCanEditRef = useRef<boolean>(canEdit);
+  const [draft, setDraft] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const prevCanEditRef = useRef(canEdit);
 
   // 編集権が外れた瞬間にドラフトを破棄してライブ表示に戻す
   useEffect(() => {
@@ -66,7 +64,7 @@ function RoomView({ roomId }: { roomId: string }) {
   }
 
   async function handleClear() {
-    await clearTranscript(roomId);
+    await saveTranscriptText(roomId, '');
     setIsEditing(false);
     setDraft('');
   }
@@ -89,7 +87,7 @@ function RoomView({ roomId }: { roomId: string }) {
           onRemoveLineBreaks={handleRemoveLineBreaks}
           onSave={handleSave}
           onClear={handleClear}
-          onFeedback={handleFeedback}
+          onFeedback={setFeedback}
         />
       </header>
       <p className="text-sm text-gray-600 dark:text-gray-400">{UI_TEXT.autoDeleteNotice}</p>

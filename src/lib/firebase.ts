@@ -33,4 +33,3 @@ if (siteKey) {
 }
 
 export const db = getFirestore(app);
-export { app };

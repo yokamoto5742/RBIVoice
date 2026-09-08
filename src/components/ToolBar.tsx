@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ComponentProps } from 'react';
 import { UI_TEXT } from '../constants';
 
 interface Props {
@@ -11,8 +11,16 @@ interface Props {
   onFeedback: (msg: string) => void;
 }
 
+const BASE = 'rounded-md border px-3 py-1.5 text-sm shadow-sm disabled:cursor-not-allowed disabled:opacity-50 dark:disabled:opacity-40';
+const NEUTRAL = 'border-gray-300 bg-white text-gray-800 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700';
+const PRIMARY = 'border-blue-300 bg-blue-50 text-blue-800 hover:bg-blue-100 dark:border-blue-600 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-800/40';
+
+function Button({ variant = 'neutral', ...props }: ComponentProps<'button'> & { variant?: 'neutral' | 'primary' }) {
+  return <button type="button" {...props} className={`${BASE} ${variant === 'primary' ? PRIMARY : NEUTRAL}`} />;
+}
+
 export function ToolBar({ text, canEdit, isDirty, onRemoveLineBreaks, onSave, onClear, onFeedback }: Props) {
-  const [busy, setBusy] = useState<boolean>(false);
+  const [busy, setBusy] = useState(false);
 
   async function handleCopy() {
     try {
@@ -52,42 +60,31 @@ export function ToolBar({ text, canEdit, isDirty, onRemoveLineBreaks, onSave, on
 
   return (
     <div className="flex items-center gap-2">
-      <button
-        type="button"
-        onClick={handleCopy}
-        title={UI_TEXT.copyTooltip}
-        disabled={text.length === 0 || busy}
-        className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-800 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:disabled:opacity-40"
-      >
+      <Button onClick={handleCopy} title={UI_TEXT.copyTooltip} disabled={text.length === 0 || busy}>
         {UI_TEXT.copyButton}
-      </button>
-      <button
-        type="button"
+      </Button>
+      <Button
         onClick={onRemoveLineBreaks}
         title={UI_TEXT.removeLineBreaksTooltip}
         disabled={text.length === 0 || !canEdit || busy}
-        className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-800 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:disabled:opacity-40"
       >
         {UI_TEXT.removeLineBreaksButton}
-      </button>
-      <button
-        type="button"
+      </Button>
+      <Button
+        variant="primary"
         onClick={handleSave}
         title={UI_TEXT.saveTooltip + editTooltipSuffix}
         disabled={!canEdit || !isDirty || busy}
-        className="rounded-md border border-blue-300 bg-blue-50 px-3 py-1.5 text-sm text-blue-800 shadow-sm hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-blue-600 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-800/40 dark:disabled:opacity-40"
       >
         {UI_TEXT.saveButton}
-      </button>
-      <button
-        type="button"
+      </Button>
+      <Button
         onClick={handleClear}
         title={UI_TEXT.clearTooltip + editTooltipSuffix}
         disabled={!canEdit || busy}
-        className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-800 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:disabled:opacity-40"
       >
         {UI_TEXT.clearButton}
-      </button>
+      </Button>
     </div>
   );
 }

@@ -2,9 +2,14 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // 認証は未導入。App Check と roomId の秘匿性が現時点での防御線。
+    // 将来的には Firebase Auth + roomId の所有者チェックに置き換える。
     match /rooms/{roomId}/transcript/body {
-      allow read, update, delete: if true;
-      allow create: if false;
+      allow read: if true;
+      allow update: if request.resource.data.keys().hasOnly(['text', 'updatedAt', 'expiresAt'])
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() <= 20000;
+      allow create, delete: if false;
     }
 
     match /rooms/{roomId}/meta/{docId} {

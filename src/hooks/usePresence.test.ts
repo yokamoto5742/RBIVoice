@@ -14,8 +14,8 @@ function makeState(recording: boolean, lastPingMs: number) {
 }
 
 describe('computeStatus', () => {
-  it('state が null の場合は unknown を返す', () => {
-    expect(computeStatus(null, now)).toBe('unknown');
+  it('state が null の場合は disconnected を返す', () => {
+    expect(computeStatus(null, now)).toBe('disconnected');
   });
 
   it('lastPing がタイムアウト以内かつ recording=true なら recording を返す', () => {

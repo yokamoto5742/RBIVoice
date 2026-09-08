@@ -1,19 +1,13 @@
 import { useEffect, useState } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { PRESENCE_TICK_MS, PRESENCE_TIMEOUT_MS } from '../constants';
+import { PRESENCE_TIMEOUT_MS } from '../constants';
 import type { PresenceState } from '../types';
 
-export type PresenceStatus = 'recording' | 'idle' | 'disconnected' | 'unknown';
+export type PresenceStatus = 'recording' | 'idle' | 'disconnected';
 
-export interface PresenceResult {
-  status: PresenceStatus;
-  state: PresenceState | null;
-}
-
-export function usePresence(roomId: string): PresenceResult {
+export function usePresence(roomId: string, now: number): PresenceStatus {
   const [state, setState] = useState<PresenceState | null>(null);
-  const [now, setNow] = useState<number>(() => Date.now());
 
   useEffect(() => {
     setState(null);
@@ -39,16 +33,11 @@ export function usePresence(roomId: string): PresenceResult {
     return unsubscribe;
   }, [roomId]);
 
-  useEffect(() => {
-    const id = window.setInterval(() => setNow(Date.now()), PRESENCE_TICK_MS);
-    return () => window.clearInterval(id);
-  }, []);
-
-  return { status: computeStatus(state, now), state };
+  return computeStatus(state, now);
 }
 
 export function computeStatus(state: PresenceState | null, now: number): PresenceStatus {
-  if (!state) return 'unknown';
+  if (!state) return 'disconnected';
   const lastPingMs = state.lastPing?.toMillis() ?? 0;
   const elapsed = now - lastPingMs;
   if (elapsed > PRESENCE_TIMEOUT_MS) return 'disconnected';

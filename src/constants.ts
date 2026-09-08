@@ -28,3 +28,4 @@ export const UI_TEXT = {
 export const PRESENCE_TIMEOUT_MS = 30 * 1000;
 export const PRESENCE_TICK_MS = 1000;
 export const TRANSCRIPT_TTL_MS = 10 * 60 * 1000;
+export const FEEDBACK_DURATION_MS = 1500;
