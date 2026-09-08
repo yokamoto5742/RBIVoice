@@ -23,7 +23,7 @@ RBIVoice は、音声文字起こし結果をリアルタイムで表示する W
 1. リポジトリをクローンする
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/yokamoto5742/RBIVoice
    cd rbivoice
    ```
 
